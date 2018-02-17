@@ -23,10 +23,12 @@ export default class Surface extends React.Component {
       return []
     }
     const timespan = this.props.maxTime - this.props.minTime
+
     const points = data.map( (point, index) => {
       const top = height - (point.duration * height / maxDuration)
       const timeOffset = point.timestamp - minTime
       const left = leftOffset + timeOffset * width / timespan
+
       let pointClassName = "scatterplot-point"
       if (point.selected) {
         pointClassName += " scatterplot-point-selected"

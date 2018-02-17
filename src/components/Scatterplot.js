@@ -5,6 +5,8 @@ import Surface from './Surface'
 import YAxis from './YAxis'
 import XAxis from './XAxis'
 
+const DATA_PATH = '/data-random'
+// const DATA_PATH = '/data'
 const STATUS_ERROR = "Failed fetching data from backend."
 const STATUS_FETCHING = "Fetching data..."
 const STATUS_INIT = "Initializing..."
@@ -28,7 +30,7 @@ export default class Scatterplot extends React.Component {
     this.setState({
       status: STATUS_FETCHING
     }, () => {
-      fetch(`${this.props.backend}/data`)
+      fetch(`${this.props.backend}${DATA_PATH}`)
         .then( (response) => {
           if (response.status >= 400) {
             throw new Error("Bad response :(")
@@ -37,6 +39,7 @@ export default class Scatterplot extends React.Component {
         })
 
         .then((data) => {
+          data.map(item => console.log(item))
           this.processData(data)
         })
 
@@ -66,7 +69,6 @@ export default class Scatterplot extends React.Component {
       const timestamp = Date.parse(start_time)
       maxTime = Math.max(maxTime, timestamp)
       minTime = Math.min(minTime, timestamp)
-
       return {timestamp, status, duration}
     })
 
@@ -111,7 +113,6 @@ export default class Scatterplot extends React.Component {
     if (this.state.data.length === 0) {
       return "No data :("
     }
-    console.log('<-DANDEBUG-> Scatterplot.js\\ 111: this.state.data:', this.state.data);
 
     return (
       <ResizeAware
