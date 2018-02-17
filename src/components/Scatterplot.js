@@ -1,65 +1,8 @@
 import React from 'react'
 import './Scatterplot.css'
-import ReacthEcharts from 'echarts-for-react'
 import Measure from 'react-measure'
-
-const FILL_COLOR_BY_STATUS = {
-  pass: "green",
-  error: "orange",
-  fail: "red"
-}
-
-class Surface extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      dimensions: {
-        width: -1,
-        height: -1
-      }
-    }
-  }
-
-  renderPoints () {
-    const { width, height } = this.state.dimensions
-    const timespan = this.props.maxTime - this.props.minTime
-    const points = this.props.data.map( (point, index) => {
-      const top = (point.duration * height / this.props.maxDuration)
-      const timeOffset = point.timestamp - this.props.minTime
-      const left = timeOffset * width / timespan
-      let pointClassName = "scatterplot-point"
-      if (point.selected) {
-        pointClassName += " scatterplot-point-selected"
-      }
-
-      return (
-        <circle key={"point_" + index}
-                className={pointClassName}
-                cx={left}
-                cy={top}
-                fill={FILL_COLOR_BY_STATUS[point.status]}
-                onClick={() => this.props.onPointClicked(point, index)}
-                r={4} />
-      )
-    })
-    return points
-  }
-
-  render () {
-    const { width, height } = this.state.dimensions
-    return (
-      <Measure
-        bounds
-        onResize={(contentRect) => this.setState({dimensions: contentRect.bounds})}
-        >
-          { ({ measureRef }) =>
-            <svg width={width} height={height} ref={measureRef} className="scatterplot-surface">{ this.renderPoints()}</svg>
-
-            }
-      </Measure>
-    )
-  }
-}
+import Surface from './Surface'
+import YAxis from './YAxis'
 
 export default class Scatterplot extends React.Component {
   constructor (props) {
@@ -112,7 +55,7 @@ export default class Scatterplot extends React.Component {
   render () {
     return (
       <div className="scatterplot-container">
-        <div className="scatterplot-yaxis"></div>
+        <YAxis maxDuration={this.state.maxDuration}/>
         <Surface data={this.state.data}
                  maxDuration={this.state.maxDuration}
                  minTime={this.state.minTime}
