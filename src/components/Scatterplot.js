@@ -53,19 +53,50 @@ export default class Scatterplot extends React.Component {
     this.setState({data})
   }
 
+  componentDidMount () {
+    this.setState({
+      height: this.el.clientHeight,
+      width: this.el.clientWidth
+    })
+  }
+
   render () {
+    const yAxisWidth = 100
+    const xAxisHeight = 100
+
     return (
-      <div className="scatterplot-container">
-        <YAxis maxDuration={this.state.maxDuration}/>
-        <Surface data={this.state.data}
-                 maxDuration={this.state.maxDuration}
-                 minTime={this.state.minTime}
-                 maxTime={this.state.maxTime}
-                 onPointClicked={this.handlePointClicked.bind(this)}
-                 />
-        <div className="scatterplot-corner"></div>
-        <XAxis minTime={this.state.minTime}
-               maxTime={this.state.maxTime} />
+      <div className="scatterplot-container"
+           ref={ (el) => this.el = el}
+           >
+        <svg height={this.state.height}
+             width={this.state.width}
+             >
+          <YAxis
+            maxDuration={this.state.maxDuration}
+            width={yAxisWidth}
+            height={this.state.height - xAxisHeight}
+            />
+
+          <Surface
+            data={this.state.data}
+            maxDuration={this.state.maxDuration}
+            minTime={this.state.minTime}
+            maxTime={this.state.maxTime}
+            onPointClicked={this.handlePointClicked.bind(this)}
+            height={this.state.height - xAxisHeight}
+            width={this.state.width - yAxisWidth}
+            leftOffset={yAxisWidth}
+            />
+
+          <XAxis
+            minTime={this.state.minTime}
+            maxTime={this.state.maxTime}
+            height={xAxisHeight}
+            width={this.state.width - yAxisWidth}
+            leftOffset={yAxisWidth}
+            topOffset={this.state.height - xAxisHeight}
+            />
+        </svg>
       </div>
     )
   }

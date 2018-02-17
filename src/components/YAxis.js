@@ -10,10 +10,9 @@ export default class YAxis extends React.Component {
     }
   }
 
-  renderLabels () {
-    const height = this.state.height
-    const width = 30 // TODO: const / dynamic?
-    if (height < 0) {
+  render () {
+    const height = this.props.height
+    if (! height > 0) {
       return []
     }
     const labelsCount = Math.floor(height / BASE_LABEL_HEIGHT)
@@ -28,7 +27,7 @@ export default class YAxis extends React.Component {
           y1={top}
           y2={top}
           x1={0}
-          x2={width}
+          x2={this.props.width}
           >
         </line>
       ), (
@@ -38,19 +37,5 @@ export default class YAxis extends React.Component {
       )]
     })
     return labels
-  }
-
-  componentDidMount () {
-    const height = this.el.clientHeight
-    this.setState({height})
-  }
-
-  render () {
-    return (
-      <svg ref={el => this.el=el}
-           style={{background: "white", width: "100%", height: "100%"}}>
-        { this.renderLabels() }
-      </svg>
-    )
   }
 }

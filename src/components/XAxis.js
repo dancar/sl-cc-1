@@ -11,18 +11,18 @@ export default class XAxis extends React.Component {
     }
   }
 
-  renderLabels () {
-    const width = this.state.width
-    console.log('<-DANDEBUG-> XAxis.js\\ 15: width:', width);
-    if (width < 0) {
+  render () {
+    if (!this.props.width) {
       return []
     }
-    const labelsCount = Math.floor(width / BASE_LABEL_WIDTH)
+    const topOffset = this.props.topOffset
+    console.log('<-DANDEBUG-> XAxis.js\\ 18: topOffset:', topOffset);
+    const labelsCount = Math.floor(this.props.width / BASE_LABEL_WIDTH)
     const timespan = this.props.maxTime - this.props.minTime
     const labelStep = timespan / labelsCount
     const labels = [...Array(labelsCount).keys()].map(index => {
       const value = index * labelStep
-      const left = value * width / timespan
+      const left = this.props.leftOffset + value * this.props.width / timespan
       const time = moment(this.props.minTime + value)
       const date = time.format("YYYY-MM-DD")
       const hour = time.format("HH:mm:ss")
@@ -31,39 +31,22 @@ export default class XAxis extends React.Component {
         <line
           stroke="black"
           key={"line_" + index}
-          y1={0}
-          y2={20}
+          y1={topOffset}
+          y2={topOffset + 20}
           x1={left}
           x2={left}
           >
         </line>
       ), (
-        <text x={left} y={30}>
+        <text x={left} y={topOffset + 30}>
           { date }
         </text>
       ), (
-        <text x={left} y={50}>
+        <text x={left} y={topOffset + 50}>
           { hour }
         </text>
       )]
     })
     return labels
-  }
-
-  componentDidMount () {
-    const width = this.el.clientWidth
-    this.setState({width})
-  }
-
-  render () {
-    const width = this.state.width
-    return (
-      <div ref={el => this.el=el} >
-
-        <svg width={width} height={40}>
-        { this.renderLabels() }
-        </svg>
-      </div>
-    )
   }
 }

@@ -18,13 +18,18 @@ export default class Surface extends React.Component {
     }
   }
 
-  renderPoints () {
-    const { width, height } = this.state
+  render () {
+    const { data, leftOffset, width, height, minTime, maxDuration} = this.props
+    if (! (height && width) ) {
+      console.log('<-DANDEBUG-> Surface.js\\ 28: <here>');
+      return []
+    }
     const timespan = this.props.maxTime - this.props.minTime
-    const points = this.props.data.map( (point, index) => {
-      const top = (point.duration * height / this.props.maxDuration)
-      const timeOffset = point.timestamp - this.props.minTime
-      const left = timeOffset * width / timespan
+    const points = data.map( (point, index) => {
+      const top = (point.duration * height / maxDuration)
+      const timeOffset = point.timestamp - minTime
+      const left = leftOffset + timeOffset * width / timespan
+      console.log('<-DANDEBUG-> Surface.js\\ 30: left:', left);
       let pointClassName = "scatterplot-point"
       if (point.selected) {
         pointClassName += " scatterplot-point-selected"
@@ -41,23 +46,5 @@ export default class Surface extends React.Component {
       )
     })
     return points
-  }
-
-  componentDidMount () {
-    this.setState({
-      width: this.el.clientWidth,
-      height: this.el.clientHeight
-    })
-  }
-
-  render () {
-    const { width, height } = this.state.dimensions
-    return (
-      <div className="scatterplot-surface" ref={el => this.el = el} >
-        <svg width={this.state.width} height={this.state.height}
-             >{this.renderPoints()}</svg>
-      </div>
-
-    )
   }
 }
