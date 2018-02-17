@@ -14,6 +14,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "moment": "^2.20.1",
     "react-measure": "^2.0.2",
     "standard": "^10.0.3"
   }

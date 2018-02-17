@@ -2,22 +2,23 @@
   widht: 100%;
   height: 100%;
   minHeight: 500px;
-  background: green;
   display: grid;
   grid-template-columns: 30px auto;
-  grid-template-rows: auto 30px;
+  grid-template-rows: auto 60px;
   margin: 30px;
+  padding: 0px
 }
 
 .scatterplot-yaxis {
-  background: red;
+
 }
 .scatterplot-surface {
   background: gray;
+
 }
 
 .scatterplot-corner{
-  background: blue;
+
 }
 .scatterplot-xaxis {
   background: purple;
@@ -33,6 +34,6 @@
 
 }
 .scatterplot-point-selected{
-  stroke-width: 2px;
-  stroke: white;
+  stroke-width: 4px;
+  stroke: cyan;
 }

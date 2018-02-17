@@ -19,7 +19,7 @@ export default class Surface extends React.Component {
   }
 
   renderPoints () {
-    const { width, height } = this.state.dimensions
+    const { width, height } = this.state
     const timespan = this.props.maxTime - this.props.minTime
     const points = this.props.data.map( (point, index) => {
       const top = (point.duration * height / this.props.maxDuration)
@@ -43,22 +43,20 @@ export default class Surface extends React.Component {
     return points
   }
 
-  handleResize (contentRect) {
-    this.setState({dimensions: contentRect.bounds})
+  componentDidMount () {
+    this.setState({
+      width: this.el.clientWidth,
+      height: this.el.clientHeight
+    })
   }
 
   render () {
     const { width, height } = this.state.dimensions
     return (
-      <div style={{backgroud: "yellow", width: "100%", height: "100%"}}>
-        <Measure bounds onResize={this.handleResize.bind(this)} >
-          { ({ measureRef }) =>
-            (
-              <svg width={width} height={height} ref={measureRef} className="scatterplot-surface">{ this.renderPoints()}</svg>
-            )
-          }
-      </Measure>
-        </div>
+      <div className="scatterplot-surface" ref={el => this.el = el} >
+        <svg width={this.state.width} height={this.state.height}
+             >{this.renderPoints()}</svg>
+      </div>
 
     )
   }

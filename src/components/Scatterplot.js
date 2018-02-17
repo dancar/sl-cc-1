@@ -3,6 +3,7 @@ import './Scatterplot.css'
 import Measure from 'react-measure'
 import Surface from './Surface'
 import YAxis from './YAxis'
+import XAxis from './XAxis'
 
 export default class Scatterplot extends React.Component {
   constructor (props) {
@@ -63,12 +64,8 @@ export default class Scatterplot extends React.Component {
                  onPointClicked={this.handlePointClicked.bind(this)}
                  />
         <div className="scatterplot-corner"></div>
-        <div className="scatterplot-xaxis">
-          <div className="scatterplot-x-label" style={{left: "10%"}}>
-            bla
-          </div>
-
-        </div>
+        <XAxis minTime={this.state.minTime}
+               maxTime={this.state.maxTime} />
       </div>
     )
   }

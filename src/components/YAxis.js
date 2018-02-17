@@ -13,7 +13,6 @@ export default class YAxis extends React.Component {
   renderLabels () {
     const height = this.state.height
     const width = 30 // TODO: const / dynamic?
-    console.log('<-DANDEBUG-> YAxis.js\\ 18: height:', height);
     if (height < 0) {
       return []
     }
