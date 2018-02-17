@@ -1,0 +1,38 @@
+.scatterplot-container {
+  widht: 100%;
+  height: 100%;
+  minHeight: 500px;
+  background: green;
+  display: grid;
+  grid-template-columns: 30px auto;
+  grid-template-rows: auto 30px;
+  margin: 30px;
+}
+
+.scatterplot-yaxis {
+  background: red;
+}
+.scatterplot-surface {
+  background: gray;
+}
+
+.scatterplot-corner{
+  background: blue;
+}
+.scatterplot-xaxis {
+  background: purple;
+  text-align: left;
+
+}
+.scatterplot-x-label {
+  position: relative;
+}
+
+.scatterplot-point {
+  cursor: pointer;
+
+}
+.scatterplot-point-selected{
+  stroke-width: 2px;
+  stroke: white;
+}
