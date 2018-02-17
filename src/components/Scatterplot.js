@@ -5,41 +5,81 @@ import Surface from './Surface'
 import YAxis from './YAxis'
 import XAxis from './XAxis'
 
+const STATUS_ERROR = "Failed fetching data from backend."
+const STATUS_FETCHING = "Fetching data..."
+const STATUS_INIT = "Initializing..."
+const STATUS_OK = "ok"
+const STATUS_NO_DATA = "No data."
+
 export default class Scatterplot extends React.Component {
   constructor (props) {
     super(props)
-    this.state = this.calcState(props)
+    this.state = {
+      status: STATUS_INIT,
+      data: null
+    }
   }
 
-  onComponentWillReceiveProps (newProps) {
-    // TODO: optimize for changes?
-    this.setState(this.calcState(newProps))
+  componentDidMount () {
+    this.fetchData()
   }
 
-  calcState (props) {
-    const data = props.data.map(({start_time, status, duration}) => {
+  fetchData () {
+    this.setState({
+      status: STATUS_FETCHING
+    }, () => {
+      fetch(`${this.props.backend}/data`)
+        .then( (response) => {
+          if (response.status >= 400) {
+            throw new Error("Bad response :(")
+          }
+          return response.json()
+        })
+
+        .then((data) => {
+          this.processData(data)
+        })
+
+        .catch((error) => {
+          this.setState({status: STATUS_ERROR})
+        })
+
+    })
+  }
+
+  processData (rawData) {
+    if (rawData.length === 0 ) {
+      this.setState({
+        status: STATUS_NO_DATA
+      })
+    }
+
+    let maxDuration = rawData[0].duration
+    let minDuration = maxDuration
+    let maxTime = Date.parse(rawData[0].start_time)
+    let minTime = maxTime
+
+    const data = rawData.map(({start_time, status, duration}) => {
+      maxDuration = Math.max(maxDuration, duration)
+      minDuration = Math.min(minDuration, duration)
+
       const timestamp = Date.parse(start_time)
+      maxTime = Math.max(maxTime, timestamp)
+      minTime = Math.min(minTime, timestamp)
+
       return {timestamp, status, duration}
     })
 
-    const durations = data.map((item) => item.duration)
-    const maxDuration = Math.max(...durations)
-    const minDuration = Math.min(...durations)
-
-    const timestamps = data.map((item) => item.timestamp)
-    const maxTime = Math.max(...timestamps)
-    const minTime = Math.min(...timestamps)
-
-    return {
+    this.setState({
+      status: STATUS_OK,
       maxDuration, minDuration,
       maxTime, minTime,
       data
-    }
+    })
 
   }
 
   handlePointClicked (point, pointIndex) {
-
     const data = this.state.data.map( (item, index) => {
       if (pointIndex === index) {
         return {
@@ -62,6 +102,16 @@ export default class Scatterplot extends React.Component {
   render () {
     const yAxisWidth = 100
     const xAxisHeight = 100
+
+    const statusOk = this.state.status === STATUS_OK
+    if (!statusOk) {
+      return this.state.status
+    }
+
+    if (this.state.data.length === 0) {
+      return "No data :("
+    }
+    console.log('<-DANDEBUG-> Scatterplot.js\\ 111: this.state.data:', this.state.data);
 
     return (
       <ResizeAware
