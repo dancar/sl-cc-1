@@ -1,12 +1,12 @@
 .scatterplot-container {
-  widht: 100%;
+  width: 100%;
   height: 100%;
-  minHeight: 500px;
   display: grid;
   grid-template-columns: 30px auto;
   grid-template-rows: auto 60px;
-  margin: 30px;
-  padding: 0px
+  margin: 0px;
+  padding: 0px;
+  background: white;
 }
 
 .scatterplot-yaxis {
@@ -17,9 +17,6 @@
 
 }
 
-.scatterplot-corner{
-
-}
 .scatterplot-xaxis {
   background: purple;
   text-align: left;

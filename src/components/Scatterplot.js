@@ -1,6 +1,6 @@
 import React from 'react'
 import './Scatterplot.css'
-import Measure from 'react-measure'
+import ResizeAware from 'react-resize-aware'
 import Surface from './Surface'
 import YAxis from './YAxis'
 import XAxis from './XAxis'
@@ -39,7 +39,6 @@ export default class Scatterplot extends React.Component {
   }
 
   handlePointClicked (point, pointIndex) {
-    console.log('<-DANDEBUG-> Scatterplot.js\\ 98: arguments:', arguments);
 
     const data = this.state.data.map( (item, index) => {
       if (pointIndex === index) {
@@ -53,7 +52,7 @@ export default class Scatterplot extends React.Component {
     this.setState({data})
   }
 
-  componentDidMount () {
+  handleResize () {
     this.setState({
       height: this.el.clientHeight,
       width: this.el.clientWidth
@@ -65,6 +64,11 @@ export default class Scatterplot extends React.Component {
     const xAxisHeight = 100
 
     return (
+      <ResizeAware
+        style={{position: 'relative', height: "100%", width: "100%"}}
+        onlyEvent
+        onResize={this.handleResize.bind(this)}
+        >
       <div className="scatterplot-container"
            ref={ (el) => this.el = el}
            >
@@ -98,6 +102,7 @@ export default class Scatterplot extends React.Component {
             />
         </svg>
       </div>
+      </ResizeAware>
     )
   }
 }

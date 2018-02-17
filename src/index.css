@@ -3,4 +3,6 @@ html, body {
   padding: 0;
   font-family: sans-serif;
   heigh: 100%;
+  background: navy;
+  padding: 30px;
 }

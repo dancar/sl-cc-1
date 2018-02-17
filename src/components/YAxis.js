@@ -1,5 +1,4 @@
 import React from 'react'
-import Measure from 'react-measure'
 
 const BASE_LABEL_HEIGHT = 40
 export default class YAxis extends React.Component {
@@ -31,8 +30,10 @@ export default class YAxis extends React.Component {
           >
         </line>
       ), (
-        <text x={0} y={top - 2}>
-          {value}
+        <text
+          key={"text_" + index}
+          x={0} y={top - 2}>
+          {value} s.
         </text>
       )]
     })

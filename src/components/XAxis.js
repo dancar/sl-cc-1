@@ -1,8 +1,7 @@
 import React from 'react'
-import Measure from 'react-measure'
 import moment from 'moment'
 
-const BASE_LABEL_WIDTH = 110
+const BASE_LABEL_WIDTH = 90
 export default class XAxis extends React.Component {
   constructor (props) {
     super(props)
@@ -16,16 +15,19 @@ export default class XAxis extends React.Component {
       return []
     }
     const topOffset = this.props.topOffset
-    console.log('<-DANDEBUG-> XAxis.js\\ 18: topOffset:', topOffset);
     const labelsCount = Math.floor(this.props.width / BASE_LABEL_WIDTH)
     const timespan = this.props.maxTime - this.props.minTime
     const labelStep = timespan / labelsCount
+    const rotationAngle = 60
     const labels = [...Array(labelsCount).keys()].map(index => {
+
+
       const value = index * labelStep
       const left = this.props.leftOffset + value * this.props.width / timespan
       const time = moment(this.props.minTime + value)
       const date = time.format("YYYY-MM-DD")
       const hour = time.format("HH:mm:ss")
+      const textTop = topOffset + 25
 
       return [(
         <line
@@ -38,11 +40,15 @@ export default class XAxis extends React.Component {
           >
         </line>
       ), (
-        <text x={left} y={topOffset + 30}>
+        <text
+          key={"text_date_" + index}
+          transform={`rotate(${rotationAngle} ${left + 15} ${textTop})`} x={left + 15} y={textTop}>
           { date }
         </text>
       ), (
-        <text x={left} y={topOffset + 50}>
+        <text
+          key={"text_hour_" + index}
+          transform={`rotate(${rotationAngle} ${left} ${textTop})`} x={left} y={textTop}>
           { hour }
         </text>
       )]

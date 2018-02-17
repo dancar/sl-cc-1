@@ -46,7 +46,10 @@ const plotpoints = [
         <header className='App-header'>
           <h1 className='App-title'>Interactive Scatterplot Component</h1>
         </header>
-        <Scatterplot data={plotpoints} />
+        <div
+          style={{height: 450, padding: 20, background: "darkgray"}}>
+          <Scatterplot data={plotpoints} />
+        </div>
       </div>
     )
   }
