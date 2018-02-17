@@ -18,7 +18,7 @@ export default class YAxis extends React.Component {
     const labelStep = this.props.maxDuration / labelsCount
     const labels = [...Array(labelsCount).keys()].map(index => {
       const value = index * labelStep
-      const top = value * height / this.props.maxDuration
+      const top = height - (value * height / this.props.maxDuration)
       return [(
         <line
           stroke="black"
