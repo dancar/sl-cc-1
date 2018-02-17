@@ -19,6 +19,7 @@
     "http-proxy-middleware": "^0.17.4",
     "moment": "^2.20.1",
     "react-resize-aware": "^2.7.0",
+    "react-sizeme": "^2.3.6",
     "standard": "^10.0.3"
   }
 }

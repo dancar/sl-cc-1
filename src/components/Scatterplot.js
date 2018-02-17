@@ -1,9 +1,10 @@
 import React from 'react'
 import './Scatterplot.css'
-import ResizeAware from 'react-resize-aware'
+import sizeMe from 'react-sizeme'
 import Surface from './Surface'
 import YAxis from './YAxis'
 import XAxis from './XAxis'
+import Toolbar from './Toolbar'
 
 const DATA_PATH = '/data-random'
 // const DATA_PATH = '/data'
@@ -13,7 +14,7 @@ const STATUS_INIT = "Initializing..."
 const STATUS_OK = "ok"
 const STATUS_NO_DATA = "No data."
 
-export default class Scatterplot extends React.Component {
+export class Scatterplot extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -23,14 +24,17 @@ export default class Scatterplot extends React.Component {
   }
 
   componentDidMount () {
-    this.fetchData()
+    this.fetchData({
+      from: new Date(0),
+      to: new Date()
+    })
   }
 
-  fetchData () {
+  fetchData ({from, to}) {
     this.setState({
       status: STATUS_FETCHING
     }, () => {
-      fetch(`${this.props.backend}${DATA_PATH}`)
+      fetch(`${this.props.backend}${DATA_PATH}?from=${from.toISOString()}&to=${to.toISOString}`)
         .then( (response) => {
           if (response.status >= 400) {
             throw new Error("Bad response :(")
@@ -94,42 +98,45 @@ export default class Scatterplot extends React.Component {
     this.setState({data})
   }
 
-  handleResize () {
+  handleResize ({width, height}) {
     this.setState({
-      height: this.el.clientHeight,
-      width: this.el.clientWidth
+      height,
+      width
     })
   }
 
   render () {
+
+    // TODO: something else?
     const yAxisWidth = 100
     const xAxisHeight = 100
+    const toolbarHeight = 30
+
+    const {width, height} = this.props.size
+    const svgHeight = height - toolbarHeight
 
     const statusOk = this.state.status === STATUS_OK
     if (!statusOk) {
-      return this.state.status
+      return (
+        <div className="scatterplot-container">
+          { this.state.status }
+        </div>
+      )
     }
 
-    if (this.state.data.length === 0) {
-      return "No data :("
-    }
 
     return (
-      <ResizeAware
-        style={{position: 'relative', height: "100%", width: "100%"}}
-        onlyEvent
-        onResize={this.handleResize.bind(this)}
-        >
       <div className="scatterplot-container"
-           ref={ (el) => this.el = el}
            >
-        <svg height={this.state.height}
-             width={this.state.width}
-             >
+        { /*ref={ (el) => this.el = el} */}
+        <Toolbar
+          onRefresh={this.fetchData.bind(this)}
+          height={toolbarHeight}/>
+        <svg height={svgHeight} width={width} >
           <YAxis
             maxDuration={this.state.maxDuration}
             width={yAxisWidth}
-            height={this.state.height - xAxisHeight}
+            height={svgHeight - xAxisHeight}
             />
 
           <Surface
@@ -138,8 +145,8 @@ export default class Scatterplot extends React.Component {
             minTime={this.state.minTime}
             maxTime={this.state.maxTime}
             onPointClicked={this.handlePointClicked.bind(this)}
-            height={this.state.height - xAxisHeight}
-            width={this.state.width - yAxisWidth}
+            height={svgHeight - xAxisHeight}
+            width={width - yAxisWidth}
             leftOffset={yAxisWidth}
             />
 
@@ -147,13 +154,18 @@ export default class Scatterplot extends React.Component {
             minTime={this.state.minTime}
             maxTime={this.state.maxTime}
             height={xAxisHeight}
-            width={this.state.width - yAxisWidth}
+            width={width - yAxisWidth}
             leftOffset={yAxisWidth}
-            topOffset={this.state.height - xAxisHeight}
+            topOffset={svgHeight - xAxisHeight}
             />
         </svg>
       </div>
-      </ResizeAware>
     )
   }
 }
+
+export default sizeMe({
+  refreshRate: 20,
+  monitorHeight: true,
+  monitorWidth: true})(Scatterplot)
+// export default Scatterplot

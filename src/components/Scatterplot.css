@@ -1,9 +1,6 @@
 .scatterplot-container {
-  width: 100%;
   height: 100%;
-  display: grid;
-  grid-template-columns: 30px auto;
-  grid-template-rows: auto 60px;
+  overflow: hidden;
   margin: 0px;
   padding: 0px;
   background: white;
@@ -33,4 +30,17 @@
 .scatterplot-point-selected{
   stroke-width: 4px;
   stroke: cyan;
+}
+
+.scatterplot-toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  background: whitesmoke;
+  text-align: center;
+  margin: auto;
+}
+.scatterplot-toolbar > input,button,label {
+  margin-right: 20px;
 }
