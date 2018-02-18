@@ -33,11 +33,11 @@ export default class YAxis extends React.Component {
       const top = height - (value * height / this.props.maxDuration)
       return [(
         <line
-          stroke="black"
+          stroke="whitesmoke"
           key={"line_" + index}
           y1={top}
           y2={top}
-          x1={0}
+          x1={this.props.yAxisWidth}
           x2={this.props.width}
           >
         </line>

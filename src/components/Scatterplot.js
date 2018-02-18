@@ -125,7 +125,6 @@ export class Scatterplot extends React.Component {
       )
     }
 
-
     return (
       <div className="scatterplot-container"
            >
@@ -136,7 +135,8 @@ export class Scatterplot extends React.Component {
         <svg height={svgHeight} width={width} >
           <YAxis
             maxDuration={this.state.maxDuration}
-            width={yAxisWidth}
+            width={width}
+            yAxisWidth={yAxisWidth}
             height={svgHeight - xAxisHeight}
             />
 
