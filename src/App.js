@@ -11,8 +11,7 @@ class App extends Component {
         <header className='App-header'>
           <h1 className='App-title'>Interactive Scatterplot Component</h1>
         </header>
-        <div
-          style={{height: 650, padding: 20, background: 'darkgray'}}>
+        <div className="main-container">
           <Scatterplot backend={BACKEND} />
         </div>
       </div>

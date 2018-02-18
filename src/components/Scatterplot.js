@@ -14,7 +14,7 @@ const DATA_PATH_BY_SOURCE = {
 
 // pixel specification:
 const SVG_PADDING = 20
-const Y_AXIS_WIDTH  = 100
+const Y_AXIS_WIDTH = 100
 const X_AXIS_HEIGHT = 120
 const TOOLBAR_HEIGHT = 30
 
@@ -154,7 +154,7 @@ export class Scatterplot extends React.Component {
             padding={SVG_PADDING}
             maxDuration={this.state.maxDuration}
             width={width}
-            yAxisWidth ={Y_AXIS_WIDTH}
+            yAxisWidth={Y_AXIS_WIDTH}
             height={svgHeight - X_AXIS_HEIGHT}
             />
 
@@ -166,7 +166,7 @@ export class Scatterplot extends React.Component {
             maxTime={this.state.maxTime}
             onPointClicked={this.handlePointClicked.bind(this)}
             height={svgHeight - X_AXIS_HEIGHT}
-            width={width -Y_AXIS_WIDTH }
+            width={width - Y_AXIS_WIDTH}
             leftOffset={Y_AXIS_WIDTH}
             />
 
@@ -175,7 +175,7 @@ export class Scatterplot extends React.Component {
             minTime={this.state.minTime}
             maxTime={this.state.maxTime}
             height={X_AXIS_HEIGHT}
-            width={width -Y_AXIS_WIDTH }
+            width={width - Y_AXIS_WIDTH}
             leftOffset={Y_AXIS_WIDTH}
             topOffset={svgHeight - X_AXIS_HEIGHT}
             />

@@ -46,7 +46,7 @@ export default class Toolbar extends React.Component {
         <label >Source: </label>
         <select name='source' onChange={this.handleInputChange} value={this.state.source}>
           <option value='random'>Random</option>
-          <option value='jsonFile'>JSON file</option>
+          <option value='jsonFile'>data.json</option>
         </select>
 
         <button type='submit'>
