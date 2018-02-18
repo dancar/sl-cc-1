@@ -1,28 +1,18 @@
 import React from 'react'
 import moment from 'moment'
 
-const BASE_LABEL_WIDTH = 90
+const LABEL_WIDTH = 100
 export default class XAxis extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      width: -1
-    }
-  }
-
   render () {
-    const { padding } = this.props
-    if (!this.props.width) {
-      return []
-    }
+    const { width, padding } = this.props
     const topOffset = this.props.topOffset + padding
-    const labelsCount = Math.floor(this.props.width / BASE_LABEL_WIDTH)
+    const labelsCount = Math.floor(width / LABEL_WIDTH)
     const timespan = this.props.maxTime - this.props.minTime
     const labelStep = timespan / labelsCount
     const rotationAngle = 60
     const labels = [...Array(labelsCount).keys()].map(index => {
       const value = index * labelStep
-      const left = padding + this.props.leftOffset + value * (this.props.width - (2 * padding)) / timespan
+      const left = padding + this.props.leftOffset + value * (width - (2 * padding)) / timespan
       const time = moment(this.props.minTime + value)
       const date = time.format('YYYY-MM-DD')
       const hour = time.format('HH:mm:ss')

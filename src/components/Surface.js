@@ -6,33 +6,22 @@ const FILL_COLOR_BY_STATUS = {
   fail: '#D34961' // red
 }
 
-export default class Surface extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      dimensions: {
-        width: -1,
-        height: -1
-      }
-    }
-  }
+const NORMAL_POINT_RADIUS = 5
+const SELECTED_POINT_RADIUS = 8
 
+export default class Surface extends React.Component {
   render () {
     const { data, leftOffset, width, height, minTime, maxDuration, padding } = this.props
-    if (!(height && width)) {
-      return []
-    }
     const timespan = this.props.maxTime - this.props.minTime
-
     const points = data.map((point, index) => {
-      const top = -padding + height - (point.duration * (height - (2 * padding)) / maxDuration)
+      const top = height - padding - (point.duration * (height - (2 * padding)) / maxDuration)
       const timeOffset = point.timestamp - minTime
       const left = padding + leftOffset + timeOffset * (width - (2 * padding)) / timespan
-      let radius = 5
+      let radius = NORMAL_POINT_RADIUS
 
       let pointClassName = 'scatterplot-point'
       if (point.selected) {
-        radius = 8
+        radius = SELECTED_POINT_RADIUS
         pointClassName += ' scatterplot-point-selected'
       }
 

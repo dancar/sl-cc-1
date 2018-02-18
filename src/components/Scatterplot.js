@@ -12,7 +12,11 @@ const DATA_PATH_BY_SOURCE = {
   jsonFile: '/data'
 }
 
-const SVG_PADDING = 20 // pixels
+// pixel specification:
+const SVG_PADDING = 20
+const Y_AXIS_WIDTH  = 100
+const X_AXIS_HEIGHT = 120
+const TOOLBAR_HEIGHT = 30
 
 const STATUS_ERROR = 'Failed fetching data from backend.'
 const STATUS_FETCHING = 'Fetching data...'
@@ -121,17 +125,11 @@ export class Scatterplot extends React.Component {
   }
 
   render () {
-    // TODO: something else?
-    const yAxisWidth = 100
-    const xAxisHeight = 120
-    const toolbarHeight = 30
-
     let {width, height} = this.state
     width = width || this.props.size.width
     height = height || this.props.size.height
 
-    const svgHeight = height - toolbarHeight
-
+    const svgHeight = height - TOOLBAR_HEIGHT
     const statusOk = (this.state.status === STATUS_OK ||
                       (this.state.status === STATUS_NO_DATA) ||
                       (this.state.status === STATUS_FETCHING && this.state.data))
@@ -149,15 +147,15 @@ export class Scatterplot extends React.Component {
            >
         <Toolbar
           onRefresh={this.fetchData.bind(this)}
-          height={toolbarHeight} />
+          height={TOOLBAR_HEIGHT} />
         { this.state.status === STATUS_OK && (
         <svg height={svgHeight} width={width} >
           <YAxis
             padding={SVG_PADDING}
             maxDuration={this.state.maxDuration}
             width={width}
-            yAxisWidth={yAxisWidth}
-            height={svgHeight - xAxisHeight}
+            yAxisWidth ={Y_AXIS_WIDTH}
+            height={svgHeight - X_AXIS_HEIGHT}
             />
 
           <Surface
@@ -167,19 +165,19 @@ export class Scatterplot extends React.Component {
             minTime={this.state.minTime}
             maxTime={this.state.maxTime}
             onPointClicked={this.handlePointClicked.bind(this)}
-            height={svgHeight - xAxisHeight}
-            width={width - yAxisWidth}
-            leftOffset={yAxisWidth}
+            height={svgHeight - X_AXIS_HEIGHT}
+            width={width -Y_AXIS_WIDTH }
+            leftOffset={Y_AXIS_WIDTH}
             />
 
           <XAxis
             padding={SVG_PADDING}
             minTime={this.state.minTime}
             maxTime={this.state.maxTime}
-            height={xAxisHeight}
-            width={width - yAxisWidth}
-            leftOffset={yAxisWidth}
-            topOffset={svgHeight - xAxisHeight}
+            height={X_AXIS_HEIGHT}
+            width={width -Y_AXIS_WIDTH }
+            leftOffset={Y_AXIS_WIDTH}
+            topOffset={svgHeight - X_AXIS_HEIGHT}
             />
         </svg>
         )}
@@ -197,4 +195,3 @@ export default sizeMe({
   refreshRate: 20,
   monitorHeight: true,
   monitorWidth: true})(Scatterplot)
-// export default Scatterplot

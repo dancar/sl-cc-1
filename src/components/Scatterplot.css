@@ -6,23 +6,6 @@
   background: white;
 }
 
-.scatterplot-yaxis {
-
-}
-.scatterplot-surface {
-  background: gray;
-
-}
-
-.scatterplot-xaxis {
-  background: purple;
-  text-align: left;
-
-}
-.scatterplot-x-label {
-  position: relative;
-}
-
 .scatterplot-point {
   cursor: pointer;
 
