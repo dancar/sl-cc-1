@@ -29,7 +29,13 @@ export class Scatterplot extends React.Component {
     }
   }
 
+  componentWillUnmount () {
+    window.removeEventListener("resize", this.handleResize.bind(this))
+    this.handleResize()
+  }
+
   componentDidMount () {
+    window.addEventListener("resize", this.handleResize.bind(this))
     this.fetchData({
       source: "jsonFile",
       from: new Date(0),
@@ -107,10 +113,10 @@ export class Scatterplot extends React.Component {
     this.setState({data})
   }
 
-  handleResize ({width, height}) {
+  handleResize () {
     this.setState({
-      height,
-      width
+      height: this.el.offsetHeight,
+      width: this.el.offsetWidth
     })
   }
 
@@ -121,7 +127,10 @@ export class Scatterplot extends React.Component {
     const xAxisHeight = 120
     const toolbarHeight = 30
 
-    const {width, height} = this.props.size
+    let {width, height} = this.state
+    width = width || this.props.size.width
+    height = height || this.props.size.height
+
     const svgHeight = height - toolbarHeight
 
     const statusOk = (this.state.status === STATUS_OK
@@ -137,6 +146,7 @@ export class Scatterplot extends React.Component {
 
     return (
       <div className="scatterplot-container"
+           ref={(el) => this.el = el }
            >
         <Toolbar
           onRefresh={this.fetchData.bind(this)}

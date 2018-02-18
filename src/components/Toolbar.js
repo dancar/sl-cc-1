@@ -42,6 +42,7 @@ export default class Toolbar extends React.Component {
         <label>To:</label>
         <input name="toDate" onChange={this.handleInputChange} value={this.state.toDate} type="date"/>
         <input name="toTime" onChange={this.handleInputChange} value={this.state.toTime} type="time"/>
+        <label >Source: </label>
         <select name="source" onChange={this.handleInputChange} value={this.state.source}>
           <option value="random">Random</option>
           <option value="jsonFile">JSON file</option>
