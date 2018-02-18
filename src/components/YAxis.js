@@ -11,7 +11,7 @@ export default class YAxis extends React.Component {
   }
 
   pad (num) {
-    return num < 9 ? "0" + num : num
+    return num < 9 ? '0' + num : num
   }
 
   formatLabel (value) {
@@ -20,13 +20,13 @@ export default class YAxis extends React.Component {
       const seconds = this.pad(value - (60 * minutes))
       return `${minutes}:${seconds}`
     }
-    return value + " s."
+    return value + ' s.'
   }
 
   render () {
     const { padding } = this.props
     const height = this.props.height - (2 * padding)
-    if (! height > 0) {
+    if (!height > 0) {
       return []
     }
 
@@ -40,17 +40,16 @@ export default class YAxis extends React.Component {
       const top = padding + height - (value * height / this.props.maxDuration)
       return [(
         <line
-          stroke="whitesmoke"
-          key={"line_" + index}
+          stroke='whitesmoke'
+          key={'line_' + index}
           y1={top}
           y2={top}
           x1={this.props.yAxisWidth}
           x2={this.props.width - padding}
-          >
-        </line>
+           />
       ), (
         <text
-          key={"text_" + index}
+          key={'text_' + index}
           x={padding} y={top - 2}>
           { this.formatLabel(value) }
         </text>

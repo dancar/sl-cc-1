@@ -14,11 +14,11 @@ const DATA_PATH_BY_SOURCE = {
 
 const SVG_PADDING = 20 // pixels
 
-const STATUS_ERROR = "Failed fetching data from backend."
-const STATUS_FETCHING = "Fetching data..."
-const STATUS_INIT = "Initializing..."
-const STATUS_OK = "ok"
-const STATUS_NO_DATA = "No data."
+const STATUS_ERROR = 'Failed fetching data from backend.'
+const STATUS_FETCHING = 'Fetching data...'
+const STATUS_INIT = 'Initializing...'
+const STATUS_OK = 'ok'
+const STATUS_NO_DATA = 'No data.'
 
 export class Scatterplot extends React.Component {
   constructor (props) {
@@ -29,28 +29,28 @@ export class Scatterplot extends React.Component {
     }
   }
 
-  componentWillUnmount () {
-    window.removeEventListener("resize", this.handleResize.bind(this))
-    this.handleResize()
-  }
-
   componentDidMount () {
-    window.addEventListener("resize", this.handleResize.bind(this))
+    window.addEventListener('resize', this.handleResize.bind(this))
     this.fetchData({
-      source: "jsonFile",
+      source: 'jsonFile',
       from: new Date(0),
       to: new Date()
     })
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('resize', this.handleResize.bind(this))
+    this.handleResize()
   }
 
   fetchData ({from, to, source}) {
     this.setState({
       status: STATUS_FETCHING
     }, () => {
-      fetch(`${this.props.backend}${DATA_PATH_BY_SOURCE[source]}?from=${from.toISOString()}&to=${to.toISOString()}`)
-        .then( (response) => {
+      window.fetch(`${this.props.backend}${DATA_PATH_BY_SOURCE[source]}?from=${from.toISOString()}&to=${to.toISOString()}`)
+        .then((response) => {
           if (response.status >= 400) {
-            throw new Error("Bad response :(")
+            throw new Error('Bad response :(')
           }
           return response.json()
         })
@@ -60,15 +60,14 @@ export class Scatterplot extends React.Component {
           this.processData(data)
         })
 
-        .catch((error) => {
+        .catch(() => {
           this.setState({status: STATUS_ERROR})
         })
-
     })
   }
 
   processData (rawData) {
-    if (rawData.length === 0 ) {
+    if (rawData.length === 0) {
       this.setState({
         status: STATUS_NO_DATA
       })
@@ -92,16 +91,17 @@ export class Scatterplot extends React.Component {
 
     this.setState({
       status: STATUS_OK,
-      maxDuration, minDuration,
-      maxTime, minTime,
+      maxDuration,
+      minDuration,
+      maxTime,
+      minTime,
       data
     })
-
   }
 
   handlePointClicked (point, pointIndex) {
-    console.log("Point clicked:" , point)
-    const data = this.state.data.map( (item, index) => {
+    console.log('Point clicked:', point)
+    const data = this.state.data.map((item, index) => {
       if (pointIndex === index) {
         return {
           ...item,
@@ -121,7 +121,6 @@ export class Scatterplot extends React.Component {
   }
 
   render () {
-
     // TODO: something else?
     const yAxisWidth = 100
     const xAxisHeight = 120
@@ -133,24 +132,24 @@ export class Scatterplot extends React.Component {
 
     const svgHeight = height - toolbarHeight
 
-    const statusOk = (this.state.status === STATUS_OK
-                      || ( this.state.status === STATUS_NO_DATA )
-                      || ( this.state.status === STATUS_FETCHING && this.state.data ))
+    const statusOk = (this.state.status === STATUS_OK ||
+                      (this.state.status === STATUS_NO_DATA) ||
+                      (this.state.status === STATUS_FETCHING && this.state.data))
     if (!statusOk) {
       return (
-        <div className="scatterplot-container">
+        <div className='scatterplot-container'>
           { this.state.status }
         </div>
       )
     }
 
     return (
-      <div className="scatterplot-container"
-           ref={(el) => this.el = el }
+      <div className='scatterplot-container'
+        ref={(el) => { this.el = el }}
            >
         <Toolbar
           onRefresh={this.fetchData.bind(this)}
-          height={toolbarHeight}/>
+          height={toolbarHeight} />
         { this.state.status === STATUS_OK && (
         <svg height={svgHeight} width={width} >
           <YAxis
@@ -184,8 +183,8 @@ export class Scatterplot extends React.Component {
             />
         </svg>
         )}
-      { this.state.status === STATUS_NO_DATA && (
-        <div className="scatterplot-nodata" style={{top: svgHeight/2}}>
+        { this.state.status === STATUS_NO_DATA && (
+        <div className='scatterplot-nodata' style={{top: svgHeight / 2}}>
           No Data
         </div>
       )}

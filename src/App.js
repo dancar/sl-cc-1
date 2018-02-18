@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import Scatterplot from './components/Scatterplot'
 import './App.css'
 
-const plotpoints = []
-const BACKEND = "http://localhost:4000"
+const BACKEND = 'http://localhost:4000'
+
 class App extends Component {
   render () {
     return (
@@ -12,7 +12,7 @@ class App extends Component {
           <h1 className='App-title'>Interactive Scatterplot Component</h1>
         </header>
         <div
-          style={{height: 650, padding: 20, background: "darkgray"}}>
+          style={{height: 650, padding: 20, background: 'darkgray'}}>
           <Scatterplot backend={BACKEND} />
         </div>
       </div>
