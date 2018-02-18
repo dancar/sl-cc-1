@@ -18,16 +18,16 @@ export default class Surface extends React.Component {
   }
 
   render () {
-    const { data, leftOffset, width, height, minTime, maxDuration} = this.props
+    const { data, leftOffset, width, height, minTime, maxDuration, padding} = this.props
     if (! (height && width) ) {
       return []
     }
     const timespan = this.props.maxTime - this.props.minTime
 
     const points = data.map( (point, index) => {
-      const top = height - (point.duration * height / maxDuration)
+      const top = -padding + height - (point.duration * (height - ( 2 * padding )) / maxDuration)
       const timeOffset = point.timestamp - minTime
-      const left = leftOffset + timeOffset * width / timespan
+      const left = padding + leftOffset + timeOffset * (width - (2 * padding)) / timespan
       let radius = 5
 
       let pointClassName = "scatterplot-point"

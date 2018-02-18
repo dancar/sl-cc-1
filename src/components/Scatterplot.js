@@ -12,6 +12,8 @@ const DATA_PATH_BY_SOURCE = {
   jsonFile: '/data'
 }
 
+const SVG_PADDING = 20 // pixels
+
 const STATUS_ERROR = "Failed fetching data from backend."
 const STATUS_FETCHING = "Fetching data..."
 const STATUS_INIT = "Initializing..."
@@ -116,7 +118,7 @@ export class Scatterplot extends React.Component {
 
     // TODO: something else?
     const yAxisWidth = 100
-    const xAxisHeight = 100
+    const xAxisHeight = 120
     const toolbarHeight = 30
 
     const {width, height} = this.props.size
@@ -142,6 +144,7 @@ export class Scatterplot extends React.Component {
         { this.state.status === STATUS_OK && (
         <svg height={svgHeight} width={width} >
           <YAxis
+            padding={SVG_PADDING}
             maxDuration={this.state.maxDuration}
             width={width}
             yAxisWidth={yAxisWidth}
@@ -149,6 +152,7 @@ export class Scatterplot extends React.Component {
             />
 
           <Surface
+            padding={SVG_PADDING}
             data={this.state.data}
             maxDuration={this.state.maxDuration}
             minTime={this.state.minTime}
@@ -160,6 +164,7 @@ export class Scatterplot extends React.Component {
             />
 
           <XAxis
+            padding={SVG_PADDING}
             minTime={this.state.minTime}
             maxTime={this.state.maxTime}
             height={xAxisHeight}

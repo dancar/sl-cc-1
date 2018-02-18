@@ -11,10 +11,11 @@ export default class XAxis extends React.Component {
   }
 
   render () {
+    const { padding } = this.props
     if (!this.props.width) {
       return []
     }
-    const topOffset = this.props.topOffset
+    const topOffset = this.props.topOffset + padding
     const labelsCount = Math.floor(this.props.width / BASE_LABEL_WIDTH)
     const timespan = this.props.maxTime - this.props.minTime
     const labelStep = timespan / labelsCount
@@ -23,7 +24,7 @@ export default class XAxis extends React.Component {
 
 
       const value = index * labelStep
-      const left = this.props.leftOffset + value * this.props.width / timespan
+      const left = padding + this.props.leftOffset + value * (this.props.width - (2 * padding)) / timespan
       const time = moment(this.props.minTime + value)
       const date = time.format("YYYY-MM-DD")
       const hour = time.format("HH:mm:ss")
