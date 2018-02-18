@@ -34,7 +34,7 @@ export class Scatterplot extends React.Component {
     this.setState({
       status: STATUS_FETCHING
     }, () => {
-      fetch(`${this.props.backend}${DATA_PATH}?from=${from.toISOString()}&to=${to.toISOString}`)
+      fetch(`${this.props.backend}${DATA_PATH}?from=${from.toISOString()}&to=${to.toISOString()}`)
         .then( (response) => {
           if (response.status >= 400) {
             throw new Error("Bad response :(")
@@ -115,7 +115,8 @@ export class Scatterplot extends React.Component {
     const {width, height} = this.props.size
     const svgHeight = height - toolbarHeight
 
-    const statusOk = this.state.status === STATUS_OK
+    const statusOk = (this.state.status === STATUS_OK
+                      || ( this.state.status === STATUS_FETCHING && this.state.data ))
     if (!statusOk) {
       return (
         <div className="scatterplot-container">

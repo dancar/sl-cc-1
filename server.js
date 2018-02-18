@@ -10,33 +10,44 @@ app.use(express.static('build'))
 app.use('/dev', proxy({target: 'http://localhost:3000', pathRewrite: {'/dev': '/'}}))
 app.use('/static', proxy({target: 'http://localhost:3000'}))
 
+function filterByTime (data, req) {
+  const from = new Date(Date.parse(req.query.from))
+  const to = new Date(Date.parse(req.query.to))
+  const ans = data.filter(item => {
+    const time = new Date(Date.parse(item.start_time))
+    return time >= from && time <= to
+  })
+
+  return ans
+}
+
 app.get('/data', (req, res) => {
   fs.readFile('data.json', 'utf8',
               (err, data) =>
-              res.send(JSON.stringify(JSON.parse(data))))
+              res.json(filterByTime(JSON.parse(data) , req)
+              ))
 })
 
 app.get('/data-random', (req, res) => {
   const maxDuration = 900
   const maxTimespan = 1000 * 60 * 60 * 24 * 365 * 3 // MAX 3 years
-  const maxDataPoints = 3
-  const minDataPoints = 3
+  const maxDataPoints = 100
+  const minDataPoints = 50
   const latestDate = new Date('2018-02-17T21:30:53.270Z')
-  const rand = randomSeed.create()
-  // const rand = randomSeed.create(SEED)
+  // const rand = randomSeed.create()
+  const rand = randomSeed.create(SEED)
 
   const startDate = new Date(rand(latestDate.getTime()))
   const endDate = startDate + rand(maxTimespan)
   const dataPointsCount = rand(maxDataPoints - minDataPoints) + minDataPoints
-  const ans = [...Array(dataPointsCount)].map( () => {
+  const data = [...Array(dataPointsCount)].map( () => {
     return {
       start_time: new Date(startDate.getTime() + rand(maxTimespan)),
       status: ["pass", "fail", "error"][rand(3)],
       duration: rand(maxDuration)
     }
   })
-  res.json(ans)
-
+  res.json(filterByTime(data, req))
 
 })
 
