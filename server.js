@@ -29,13 +29,13 @@ app.get('/data', (req, res) => {
 })
 
 app.get('/data-random', (req, res) => {
-  const maxDuration = 900
+  const maxDuration = 300
   const maxTimespan = 1000 * 60 * 60 * 24 * 365 * 3 // MAX 3 years
-  const maxDataPoints = 100
-  const minDataPoints = 50
+  const maxDataPoints = 110
+  const minDataPoints = 100
   const latestDate = new Date('2018-02-17T21:30:53.270Z')
-  // const rand = randomSeed.create()
-  const rand = randomSeed.create(SEED)
+  const rand = randomSeed.create()
+  // const rand = randomSeed.create(SEED)
 
   const startDate = new Date(rand(latestDate.getTime()))
   const endDate = startDate + rand(maxTimespan)

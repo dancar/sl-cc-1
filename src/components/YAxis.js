@@ -1,6 +1,7 @@
 import React from 'react'
 
-const BASE_LABEL_HEIGHT = 40
+const BASE_LABEL_HEIGHT = 30
+const AVAILABLE_SCALE_TICS_IN_SECONDS = [1, 15, 30, 60]
 export default class YAxis extends React.Component {
   constructor (props) {
     super(props)
@@ -9,13 +10,24 @@ export default class YAxis extends React.Component {
     }
   }
 
+  formatLabel (value) {
+    if (this.props.maxDuration > 90) {
+      return (value / 60) + " min."
+    }
+    return value + " s."
+  }
+
   render () {
     const height = this.props.height
     if (! height > 0) {
       return []
     }
-    const labelsCount = Math.floor(height / BASE_LABEL_HEIGHT)
-    const labelStep = this.props.maxDuration / labelsCount
+
+    const maxPossibleLabels = Math.floor(height / BASE_LABEL_HEIGHT) + 1
+    const labelStep = Math.min(
+      ...AVAILABLE_SCALE_TICS_IN_SECONDS.filter(
+        tics => Math.floor(this.props.maxDuration / tics) <= maxPossibleLabels))
+    const labelsCount = Math.ceil(this.props.maxDuration / labelStep)
     const labels = [...Array(labelsCount).keys()].map(index => {
       const value = index * labelStep
       const top = height - (value * height / this.props.maxDuration)
@@ -33,7 +45,7 @@ export default class YAxis extends React.Component {
         <text
           key={"text_" + index}
           x={0} y={top - 2}>
-          {value} s.
+          { this.formatLabel(value) }
         </text>
       )]
     })
