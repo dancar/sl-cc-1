@@ -1,13 +1,17 @@
 import React from 'react'
 import './Scatterplot.css'
 import sizeMe from 'react-sizeme'
+
 import Surface from './Surface'
 import YAxis from './YAxis'
 import XAxis from './XAxis'
 import Toolbar from './Toolbar'
 
-const DATA_PATH = '/data-random'
-// const DATA_PATH = '/data'
+const DATA_PATH_BY_SOURCE = {
+  random: '/data-random',
+  jsonFile: '/data'
+}
+
 const STATUS_ERROR = "Failed fetching data from backend."
 const STATUS_FETCHING = "Fetching data..."
 const STATUS_INIT = "Initializing..."
@@ -25,16 +29,17 @@ export class Scatterplot extends React.Component {
 
   componentDidMount () {
     this.fetchData({
+      source: "jsonFile",
       from: new Date(0),
       to: new Date()
     })
   }
 
-  fetchData ({from, to}) {
+  fetchData ({from, to, source}) {
     this.setState({
       status: STATUS_FETCHING
     }, () => {
-      fetch(`${this.props.backend}${DATA_PATH}?from=${from.toISOString()}&to=${to.toISOString()}`)
+      fetch(`${this.props.backend}${DATA_PATH_BY_SOURCE[source]}?from=${from.toISOString()}&to=${to.toISOString()}`)
         .then( (response) => {
           if (response.status >= 400) {
             throw new Error("Bad response :(")
@@ -59,6 +64,7 @@ export class Scatterplot extends React.Component {
       this.setState({
         status: STATUS_NO_DATA
       })
+      return
     }
 
     let maxDuration = rawData[0].duration
@@ -86,6 +92,7 @@ export class Scatterplot extends React.Component {
   }
 
   handlePointClicked (point, pointIndex) {
+    console.log("Point clicked:" , point)
     const data = this.state.data.map( (item, index) => {
       if (pointIndex === index) {
         return {
@@ -116,6 +123,7 @@ export class Scatterplot extends React.Component {
     const svgHeight = height - toolbarHeight
 
     const statusOk = (this.state.status === STATUS_OK
+                      || ( this.state.status === STATUS_NO_DATA )
                       || ( this.state.status === STATUS_FETCHING && this.state.data ))
     if (!statusOk) {
       return (
@@ -128,10 +136,10 @@ export class Scatterplot extends React.Component {
     return (
       <div className="scatterplot-container"
            >
-        { /*ref={ (el) => this.el = el} */}
         <Toolbar
           onRefresh={this.fetchData.bind(this)}
           height={toolbarHeight}/>
+        { this.state.status === STATUS_OK && (
         <svg height={svgHeight} width={width} >
           <YAxis
             maxDuration={this.state.maxDuration}
@@ -160,6 +168,12 @@ export class Scatterplot extends React.Component {
             topOffset={svgHeight - xAxisHeight}
             />
         </svg>
+        )}
+      { this.state.status === STATUS_NO_DATA && (
+        <div className="scatterplot-nodata" style={{top: svgHeight/2}}>
+          No Data
+        </div>
+      )}
       </div>
     )
   }

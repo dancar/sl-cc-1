@@ -4,6 +4,7 @@ export default class Toolbar extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      source: "jsonFile",
       fromDate: new Date(0).toISOString().substring(0, 10),
       toDate: new Date().toISOString().substring(0, 10),
       fromTime: new Date(0).toISOString().substring(11, 16),
@@ -27,8 +28,8 @@ export default class Toolbar extends React.Component {
     e.preventDefault()
     const from = this.createTimestamp(this.state.fromDate, this.state.fromTime)
     const to = this.createTimestamp(this.state.toDate, this.state.toTime)
-    this.props.onRefresh({from, to})
-
+    const source = this.state.source
+    this.props.onRefresh({from, to, source})
   }
 
   render () {
@@ -41,6 +42,10 @@ export default class Toolbar extends React.Component {
         <label>To:</label>
         <input name="toDate" onChange={this.handleInputChange} value={this.state.toDate} type="date"/>
         <input name="toTime" onChange={this.handleInputChange} value={this.state.toTime} type="time"/>
+        <select name="source" onChange={this.handleInputChange} value={this.state.source}>
+          <option value="random">Random</option>
+          <option value="jsonFile">JSON file</option>
+        </select>
 
         <button type="submit">
           Refresh
