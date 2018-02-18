@@ -47,4 +47,4 @@ app.get('/data-random', (req, res) => {
 })
 
 const PORT = 4000
-app.listen(PORT, () => console.log('listening on ' + PORT))
+app.listen(PORT, () => console.log(`\n\nSL-CC Available at:\n\n\thttp://localhost:${PORT}`))

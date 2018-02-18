@@ -4,20 +4,19 @@
   "private": true,
   "dependencies": {
     "express": "^4.16.2",
+    "moment": "^2.20.1",
     "random-seed": "^0.3.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-scripts": "1.1.1"
   },
   "scripts": {
+    "start": "node server.js",
     "react-start": "react-scripts start",
-    "react-build": "react-scripts build",
-    "react-test": "react-scripts test --env=jsdom",
-    "react-eject": "react-scripts eject"
+    "build": "react-scripts build"
   },
   "devDependencies": {
     "http-proxy-middleware": "^0.17.4",
-    "moment": "^2.20.1",
     "react-resize-aware": "^2.7.0",
     "react-sizeme": "^2.3.6",
     "standard": "^10.0.3"
