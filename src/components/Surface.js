@@ -1,9 +1,9 @@
 import React from 'react'
 
 const FILL_COLOR_BY_STATUS = {
-  pass: "green",
-  error: "orange",
-  fail: "red"
+  pass: "#A1C188", // green,
+  error: "#CD8D67", // orange
+  fail: "#D34961" // red
 }
 
 export default class Surface extends React.Component {
@@ -28,9 +28,11 @@ export default class Surface extends React.Component {
       const top = height - (point.duration * height / maxDuration)
       const timeOffset = point.timestamp - minTime
       const left = leftOffset + timeOffset * width / timespan
+      let radius = 5
 
       let pointClassName = "scatterplot-point"
       if (point.selected) {
+        radius = 8
         pointClassName += " scatterplot-point-selected"
       }
 
@@ -41,7 +43,7 @@ export default class Surface extends React.Component {
                 cy={top}
                 fill={FILL_COLOR_BY_STATUS[point.status]}
                 onClick={() => this.props.onPointClicked(point, index)}
-                r={4} />
+                r={radius} />
       )
     })
     return points

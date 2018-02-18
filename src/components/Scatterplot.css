@@ -29,7 +29,7 @@
 }
 .scatterplot-point-selected{
   stroke-width: 4px;
-  stroke: cyan;
+  stroke: yellow;
 }
 
 .scatterplot-toolbar {
